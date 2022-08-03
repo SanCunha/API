@@ -8,7 +8,16 @@ exports.root = async (req, res) => {
   });
 };
 exports.tsp = async (req, res) => {
-  let { cities, iterations, algorithm } = req.body;
+  let {
+    cities,
+    iterations,
+    algorithm,
+    _colony_size,
+    _alpha,
+    _beta,
+    _rho,
+    _pheromone_deposit_weight,
+  } = req.body;
 
   var dataToSend;
   // spawn new child process to call the python script
@@ -17,6 +26,11 @@ exports.tsp = async (req, res) => {
     cities,
     iterations,
     algorithm,
+    _colony_size,
+    _alpha,
+    _beta,
+    _rho,
+    _pheromone_deposit_weight,
   ]);
 
   // collect data from script
@@ -32,5 +46,6 @@ exports.tsp = async (req, res) => {
   python.on("exit", (code) => {
     console.log(`child process exited with code ${code}, ${dataToSend}`);
     res.json(JSON.parse(dataToSend.toString()));
+    // res.send(dataToSend);
   });
 };
